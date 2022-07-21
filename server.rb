@@ -1,9 +1,21 @@
 require 'sinatra'
 require 'rack/handler/puma'
-require 'csv'
+require './lib/csv_to_json'
+require './lib/database'
+require './lib/importer'
+
+get '/tests' do
+  Database.tests
+end
+
+get '/import' do
+  Importer.call('./data.csv')
+
+  "Timestamp: #{SecureRandom.uuid}"
+end
 
 get '/tests.csv' do
-  CSV.read("./data.csv", col_sep: ';').map(&:to_json)
+  CsvToJson.call('./data.csv').map(&:to_json)
 end
 
 Rack::Handler::Puma.run(

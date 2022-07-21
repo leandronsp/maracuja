@@ -14,5 +14,16 @@ services:
       - "3000:3000"
     command: "ruby server.rb"
 
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: maracuja
+      POSTGRES_PASSWORD: maracuja
+      POSTGRES_DB: maracuja
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - pgdata:/var/lib/postgresql/data/pgdata
+
 volumes:
   rubygems:
+  pgdata:
