@@ -1,17 +1,17 @@
-## Maracuja
+# Maracuja
 
-### Requirements
+## Requirements
 
 * Docker
 * Terraform
 
-### Provisioning
+## Provisioning
 ```bash
 $ make terraform.init
 $ make terraform.apply
 ```
 
-### SSH connfiguration
+## SSH connfiguration
 
 Prepare:
 ```bash
@@ -37,12 +37,12 @@ Then:
 $ ssh maracuja
 ```
 
-### Docker setup
+## Docker setup
 ```bash
 $ make docker.setup
 ```
 
-### Deploy
+## Deploy
 ```bash
 $ make app.release # builds the image
 $ make app.deploy  # deploys the image to the server
