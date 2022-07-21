@@ -46,6 +46,5 @@ $ make docker.setup
 ```bash
 $ make app.release # builds the image
 $ make app.deploy  # deploys the image to the server
-$ make app.stop    # stops the application
-$ make app.run     # runs the application
+$ make run.app     # runs the application
 ```

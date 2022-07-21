@@ -1,9 +1,11 @@
-require_relative './database'
+require_relative './result_test_dao'
 require_relative './csv_to_json'
 
 class Importer
   def self.call(filename)
-    Database.execute(setup_table_sql)
+    dao = ResultTestDAO.new
+
+    dao.execute(setup_table_sql)
 
     csv_data(filename).each do |result_test|
       row = result_test
@@ -17,7 +19,7 @@ class Importer
         .join(', ')
 
       insert_data_sql = %{ INSERT INTO result_tests (#{columns}) VALUES (#{row}) }
-      Database.execute(insert_data_sql)
+      dao.execute(insert_data_sql)
     end
   end
 

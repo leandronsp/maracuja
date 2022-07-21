@@ -1,0 +1,12 @@
+#!/bin/bash
+
+docker rm -f sidekiq
+
+docker run \
+  -d \
+  --rm \
+  --name sidekiq \
+  --network maracuja \
+  -e REDIS_URL=redis://redis:6379/0 \
+  maracuja \
+  bash -c "sidekiq -r /app/lib/importer_job.rb"

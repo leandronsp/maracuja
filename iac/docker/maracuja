@@ -1,0 +1,12 @@
+#!/bin/bash
+
+docker rm -f maracuja
+
+docker run \
+  -d \
+  --rm \
+  --name maracuja \
+  --network maracuja \
+  -e REDIS_URL=redis://redis:6379/0 \
+  -p "3000:3000" \
+  maracuja

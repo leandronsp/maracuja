@@ -1,0 +1,10 @@
+#!/bin/bash
+
+docker rm -f redis
+
+docker run \
+  -d \
+  --rm \
+  --name redis \
+  --network maracuja \
+  redis

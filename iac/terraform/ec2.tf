@@ -56,6 +56,15 @@ resource "aws_security_group" "webapp_sg" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
+  ingress {
+    description = "TCP:9292 from 0.0.0.0/0"
+    from_port = 9292
+    to_port = 9292
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
   egress {
     description = "Outbound connections"
     from_port = 0

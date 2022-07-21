@@ -1,11 +1,16 @@
 require 'sinatra'
 require 'rack/handler/puma'
 require './lib/csv_to_json'
-require './lib/database'
+require './lib/result_test_dao'
 require './lib/importer'
+require './lib/importer_job'
+
+get '/tests.csv' do
+  CsvToJson.call('./data.csv').map(&:to_json)
+end
 
 get '/tests' do
-  Database.tests
+  ResultTestDAO.all
 end
 
 get '/import' do
@@ -14,8 +19,10 @@ get '/import' do
   "Timestamp: #{SecureRandom.uuid}"
 end
 
-get '/tests.csv' do
-  CsvToJson.call('./data.csv').map(&:to_json)
+post '/import' do
+  ImporterJob.perform_async('./data.csv')
+
+  "Timestamp: #{SecureRandom.uuid}"
 end
 
 Rack::Handler::Puma.run(

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+docker rm -f postgres
+
+docker run \
+  -d \
+  --rm \
+  --name postgres \
+  --network maracuja \
+  -e POSTGRES_USER=maracuja \
+  -e POSTGRES_PASSWORD=maracuja \
+  -e PGDATA=/var/lib/postgresql/data/pgdata \
+  -e POSTGRES_DB=maracuja \
+  -v pgdata:/var/lib/postgresql/data/pgdata \
+  postgres

@@ -7,6 +7,8 @@ services:
       target: dev
     container_name: maracuja-app
     working_dir: /app
+    environment:
+      REDIS_URL: redis://redis:6379/0
     volumes:
       - ./:/app
       - rubygems:/usr/local/bundle
@@ -16,6 +18,8 @@ services:
 
   postgres:
     image: postgres
+    container_name: maracuja-pg
+    restart: always
     environment:
       POSTGRES_USER: maracuja
       POSTGRES_PASSWORD: maracuja
@@ -23,6 +27,38 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - pgdata:/var/lib/postgresql/data/pgdata
+
+  redis:
+    image: redis
+    container_name: maracuja-redis
+
+  sidekiq:
+    build:
+      context: .
+      target: dev
+    container_name: maracuja-sidekiq
+    working_dir: /app
+    environment:
+      REDIS_URL: redis://redis:6379/0
+    volumes:
+      - ./:/app
+      - rubygems:/usr/local/bundle
+    command: "sidekiq -r ./lib/importer_job.rb"
+
+  sidekiq_web:
+    build:
+      context: .
+      target: dev
+    container_name: maracuja-sidekiq_web
+    working_dir: /app
+    environment:
+      REDIS_URL: redis://redis:6379/0
+    ports:
+      - "9292:9292"
+    volumes:
+      - ./:/app
+      - rubygems:/usr/local/bundle
+    command: "rackup --port 9292 --host 0.0.0.0 sidekiq-web.ru"
 
 volumes:
   rubygems:

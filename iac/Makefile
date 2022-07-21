@@ -16,15 +16,23 @@ app.release:
 app.deploy:
 	@docker save maracuja | ssh -C maracuja docker load
 
-app.stop:
-	@ssh maracuja "docker stop maracuja"
-
-app.start:
-	@ssh maracuja "docker run -p 3000:3000 --name maracuja --rm -d maracuja"
-
-app.restart:
-	@make app.stop
-	@make app.start
-
 app.logs:
 	@ssh maracuja "docker logs -f maracuja"
+
+create.network:
+	ssh maracuja docker network create maracuja
+
+run.app:
+	@cat iac/docker/maracuja | ssh maracuja "set -x && cat - | bash"
+
+run.postgres:
+	@cat iac/docker/postgres | ssh maracuja "set -x && cat - | bash"
+
+run.redis:
+	@cat iac/docker/redis | ssh maracuja "set -x && cat - | bash"
+
+run.sidekiq:
+	@cat iac/docker/sidekiq | ssh maracuja "set -x && cat - | bash"
+
+run.sidekiq-web:
+	@cat iac/docker/sidekiq-web | ssh maracuja "set -x && cat - | bash"
